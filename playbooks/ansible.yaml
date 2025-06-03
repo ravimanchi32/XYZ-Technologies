@@ -1,18 +1,24 @@
+---
 - name: DEPLOYMENT ON EKS
   hosts: kubernetes
   remote_user: ubuntu
-  tasks:  
+  become: true  # <-- this line is key
+  tasks:
     - name: CREATE PLAYBOOKS DIR ON EKS CLUSTER
       file:
         path: /home/ubuntu/xyztech 
         state: directory
+        owner: ubuntu
+        group: ubuntu
         mode: "0755"
 
     - name: COPY pod.yaml FILE TO EKS CLUSTER
       copy:
         src: /var/lib/jenkins/workspace/xyztechnologies/playbooks/pod.yaml   
-        dest: /home/ubuntu/xyztech/pod.yaml         
-
+        dest: /home/ubuntu/xyztech/pod.yaml
+        owner: ubuntu
+        group: ubuntu
+        mode: "0644"
     - name: CHECK FILE
       shell: ls -l /home/ubuntu/xyztech/ 
       register: copy        
@@ -22,7 +28,7 @@
         var: copy.stdout_lines             
         
     - name: DEPLOYMENT ON K8s CLUSTER
-      shell: kubectl apply -f /home/ubuntu/abctech/pod.yaml
+      shell: kubectl apply -f /home/ubuntu/xyztech/pod.yaml
       register: deployment
 
     - name: DEPLOYMENT STATUS      
