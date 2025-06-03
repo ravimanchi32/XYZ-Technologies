@@ -1,4 +1,3 @@
----
 - name: DEPLOYMENT ON EKS
   hosts: kubernetes
   remote_user: ubuntu
@@ -12,7 +11,7 @@
     - name: COPY pod.yaml FILE TO EKS CLUSTER
       copy:
         src: /var/lib/jenkins/workspace/xyztechnologies/playbooks/pod.yaml   
-        dest: /home/ubuntu/abctech/pod.yaml         
+        dest: /home/ubuntu/xyztech/pod.yaml         
 
     - name: CHECK FILE
       shell: ls -l /home/ubuntu/xyztech/ 
@@ -20,7 +19,7 @@
 
     - name: DEPLOYMENT FILE COPY STATUS      
       debug:
-        var: copy.stdout_lines              
+        var: copy.stdout_lines             
         
     - name: DEPLOYMENT ON K8s CLUSTER
       shell: kubectl apply -f /home/ubuntu/abctech/pod.yaml
