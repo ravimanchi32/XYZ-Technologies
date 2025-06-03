@@ -2,7 +2,7 @@ pipeline {
     agent any
     
     environment {
-        CONTAINER_NAME = 'abctech'
+        CONTAINER_NAME = 'xyztech'
     }
     
     tools {
@@ -19,7 +19,7 @@ pipeline {
         }
         stage('git checkout') {
             steps {
-                git branch: 'dev', url: 'https://github.com/ravimanchi0321/ABC-Technologies.git'
+                git branch: 'master', url: 'https://github.com/ravimanchi0321/XYZ-Technologies.git'
         }
         }
         stage('Build') {
