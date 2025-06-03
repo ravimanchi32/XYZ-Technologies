@@ -1,0 +1,50 @@
+---
+- name: DEPLOYMENT ON EKS
+  hosts: kubernetes
+  remote_user: ubuntu
+  tasks:  
+    - name: CREATE PLAYBOOKS DIR ON EKS CLUSTER
+      file:
+        path: /home/ubuntu/abctech 
+        state: directory
+        mode: "0755"
+
+    - name: COPY pod.yaml FILE TO EKS CLUSTER
+      copy:
+        src: /var/lib/jenkins/workspace/abctechnologies/playbooks/pod.yaml   
+        dest: /home/ubuntu/abctech/pod.yaml         
+
+    - name: CHECK FILE
+      shell: ls -l /home/ubuntu/abctech/ 
+      register: copy        
+
+    - name: DEPLOYMENT FILE COPY STATUS      
+      debug:
+        var: copy.stdout_lines              
+        
+    - name: DEPLOYMENT ON K8s CLUSTER
+      shell: kubectl apply -f /home/ubuntu/abctech/pod.yaml
+      register: deployment
+
+    - name: DEPLOYMENT STATUS      
+      debug:
+        var: deployment.stdout_lines
+
+    - name: WAITING FOR GET DEPLOYMENT STATUS
+      shell: sleep 10     
+
+    - name: STATUS OF DEPLOYMENT
+      shell: kubectl get pod
+      register: get_deployment_status
+      
+    - name: STATUS OF SERVICE
+      shell: kubectl get svc
+      register: get_svc_status
+
+    - name: PRINT DEPLOYMENT STATUS
+      debug:
+        var: get_deployment_status.stdout_lines
+
+    - name: PRINT SVC STATUS
+      debug:
+        var: get_svc_status.stdout_lines
