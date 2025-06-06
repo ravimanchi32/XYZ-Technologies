@@ -49,17 +49,6 @@ pipeline {
                 sh 'docker push ravikumarmanchi/"$JOB_NAME":latest'
         }
         }
-        // stage('Deploy Docker Container') {
-        //     steps {
-        //         sh '''
-        //             # Stop and remove existing container if running
-        //             docker rm -f $CONTAINER_NAME || true
-
-        //             # Run new container
-        //             docker run -d --name $CONTAINER_NAME -p 8085:8080 ravikumarmanchi/"$JOB_NAME":latest
-        //         '''
-        //     }
-        // }
 
         stage('DEPLOYMENT ON EKS') {
             steps {
